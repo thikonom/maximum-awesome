@@ -4,6 +4,8 @@ set nocompatible
 " enable syntax highlighting
 syntax enable
 
+set background=dark
+
 " configure Vundle
 filetype on " without this vim emits a zero exit status, later, because of :ft off
 filetype off
@@ -43,6 +45,10 @@ set tabstop=8                                                " actual tabs occup
 set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
 set wildmenu                                                 " show a navigable menu for tab completion
 set wildmode=longest,list,full
+
+" adjust for python
+autocmd FileType python setlocal shiftwidth=4 softtabstop=4
+nnoremap <leader>p Oimport pdb; pdb.set_trace()
 
 " Enable basic mouse behavior such as resizing buffers.
 set mouse=a
