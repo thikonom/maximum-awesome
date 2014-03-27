@@ -1,10 +1,11 @@
 " don't bother with vi compatibility
 set nocompatible
+set shell=bash
 
 " enable syntax highlighting
 syntax enable
 
-set background=dark
+" set background=light
 
 " configure Vundle
 filetype on " without this vim emits a zero exit status, later, because of :ft off
@@ -127,3 +128,5 @@ if filereadable(expand("~/.vimrc.local"))
   " noremap! jj <ESC>
   source ~/.vimrc.local
 endif
+
+set rtp+=/Users/thikonom/Downloads/packages/powerline/powerline/bindings/vim
