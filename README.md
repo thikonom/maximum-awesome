@@ -3,6 +3,10 @@
 Config files for vim and tmux, lovingly tended by a small subculture of
 peace-loving hippies. Built for Linux.
 
+## TODO
+1. Add fish suppport
+2. Add gitconfig
+
 ## What's in it?
 
 * [tmux](http://tmux.sourceforge.net/)
