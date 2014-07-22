@@ -1,20 +1,8 @@
-ENV['HOMEBREW_CASK_OPTS'] = "--appdir=/Applications"
+def apt_install(package, *options)
+  `apt-cache search #{package}`
+   return if $?.success?
 
-def brew_install(package, *args)
-  versions = `brew list #{package} --versions`
-  options = args.last.is_a?(Hash) ? args.pop : {}
-
-  # if brew exits with error we install tmux
-  if versions.empty?
-    sh "brew install #{package} #{args.join ' '}"
-  elsif options[:requires]
-    # brew did not error out, verify tmux is greater than 1.8
-    # e.g. brew_tmux_query = 'tmux 1.9a'
-    installed_version = versions.split(/\n/).first.split(' ')[1]
-    unless version_match?(options[:version], installed_version)
-      sh "brew upgrade #{package} #{args.join ' '}"
-    end
-  end
+   sh "sudo apt-get install #{package} #{options.join ' '}"
 end
 
 def version_match?(requirement, version)
@@ -116,91 +104,36 @@ def unlink_file(original_filename, symlink_filename)
 end
 
 namespace :install do
-  desc 'Update or Install Brew'
-  task :brew do
-    step 'Homebrew'
-    unless system('which brew > /dev/null || ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"')
-      raise "Homebrew must be installed before continuing."
-    end
-  end
-
-  desc 'Install Homebrew Cask'
-  task :brew_cask do
-    step 'Homebrew Cask'
-    system('brew untap phinze/cask') if system('brew tap | grep phinze/cask > /dev/null')
-    unless system('brew tap | grep caskroom/cask > /dev/null') || system('brew tap caskroom/homebrew-cask')
-      abort "Failed to tap caskroom/homebrew-cask in Homebrew."
-    end
-
-    brew_install 'brew-cask'
-  end
-
   desc 'Install The Silver Searcher'
   task :the_silver_searcher do
     step 'the_silver_searcher'
-    brew_install 'the_silver_searcher'
-  end
-
-  desc 'Install iTerm'
-  task :iterm do
-    step 'iterm2'
-    unless app? 'iTerm'
-      brew_cask_install 'iterm2'
-    end
+    apt_install 'the_silver_searcher'
   end
 
   desc 'Install ctags'
   task :ctags do
     step 'ctags'
-    brew_install 'ctags'
+    apt_install 'ctags'
   end
 
   desc 'Install reattach-to-user-namespace'
   task :reattach_to_user_namespace do
     step 'reattach-to-user-namespace'
-    brew_install 'reattach-to-user-namespace'
+    apt_install 'reattach-to-user-namespace'
   end
 
   desc 'Install tmux'
   task :tmux do
     step 'tmux'
     # tmux copy-pipe function needs tmux >= 1.8
-    brew_install 'tmux', :requires => '>= 1.8'
-  end
-
-  desc 'Install MacVim'
-  task :macvim do
-    step 'MacVim'
-    unless app? 'MacVim'
-      brew_cask_install 'macvim'
-    end
-
-    bin_dir = File.expand_path('~/bin')
-    bin_vim = File.join(bin_dir, 'vim')
-    unless ENV['PATH'].split(':').include?(bin_dir)
-      puts 'Please add ~/bin to your PATH, e.g. run this command:'
-      puts
-      puts %{  echo 'export PATH="~/bin:$PATH"' >> ~/.bashrc}
-      puts
-      puts 'The exact command and file will vary by your shell and configuration.'
-    end
-
-    FileUtils.mkdir_p(bin_dir)
-    unless File.executable?(bin_vim)
-      File.open(bin_vim, 'w', 0744) do |io|
-        io << <<-SHELL
-#!/bin/bash
-exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
-        SHELL
-      end
-    end
+    apt_install 'tmux', :requires => '>= 1.8'
   end
 
   desc 'Install Vundle'
   task :vundle do
     step 'vundle'
     install_github_bundle 'gmarik','vundle'
-    sh '~/bin/vim -c "BundleInstall" -c "q" -c "q"'
+    sh '/usr/bin/vim -c "BundleInstall" -c "q" -c "q"'
   end
 end
 
@@ -226,14 +159,9 @@ LINKED_FILES = filemap(
 
 desc 'Install these config files.'
 task :install do
-  Rake::Task['install:brew'].invoke
-  Rake::Task['install:brew_cask'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
-  Rake::Task['install:iterm'].invoke
   Rake::Task['install:ctags'].invoke
   Rake::Task['install:reattach_to_user_namespace'].invoke
-  Rake::Task['install:tmux'].invoke
-  Rake::Task['install:macvim'].invoke
 
   # TODO install gem ctags?
   # TODO run gem ctags?
@@ -251,21 +179,6 @@ task :install do
   # Install Vundle and bundles
   Rake::Task['install:vundle'].invoke
 
-  step 'iterm2 colorschemes'
-  colorschemes = `defaults read com.googlecode.iterm2 'Custom Color Presets'`
-  dark  = colorschemes !~ /Solarized Dark/
-  light = colorschemes !~ /Solarized Light/
-  sh('open', '-a', '/Applications/iTerm.app', File.expand_path('iterm2-colors-solarized/Solarized Dark.itermcolors')) if dark
-  sh('open', '-a', '/Applications/iTerm.app', File.expand_path('iterm2-colors-solarized/Solarized Light.itermcolors')) if light
-
-  step 'iterm2 profiles'
-  puts
-  puts "  Your turn!"
-  puts
-  puts "  Go and manually set up Solarized Light and Dark profiles in iTerm2."
-  puts "  (You can do this in 'Preferences' -> 'Profiles' by adding a new profile,"
-  puts "  then clicking the 'Colors' tab, 'Load Presets...' and choosing a Solarized option.)"
-  puts "  Also be sure to set Terminal Type to 'xterm-256color' in the 'Terminal' tab."
   puts
   puts "  Enjoy!"
   puts
@@ -285,21 +198,6 @@ task :uninstall do
     rm_f copy, :verbose => true if File.read(orig) == File.read(copy)
   end
 
-  step 'homebrew'
-  puts
-  puts 'Manually uninstall homebrew if you wish: https://gist.github.com/mxcl/1173223.'
-
-  step 'iterm2'
-  puts
-  puts 'Run this to uninstall iTerm:'
-  puts
-  puts '  rm -rf /Applications/iTerm.app'
-
-  step 'macvim'
-  puts
-  puts 'Run this to uninstall MacVim:'
-  puts
-  puts '  rm -rf /Applications/MacVim.app'
 end
 
 task :default => :install
