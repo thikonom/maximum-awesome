@@ -16,11 +16,15 @@ def install_github_bundle(user, package)
   end
 end
 
-def brew_cask_install(package, *options)
-  output = `brew cask info #{package}`
-  return unless output.include?('Not installed')
-
-  sh "brew cask install #{package} #{options.join ' '}"
+def install_autojump()
+  unless File.exist? File.expand_path("./autojump")
+    sh "git clone git@github.com:joelthelion/autojump.git"
+  end
+  path = File.expand_path("autojump")
+  Dir.chdir(path) do
+    sh %{./install.py}
+  end
+  `echo "[[ -s /home/theo/.autojump/etc/profile.d/autojump.sh ]] && source /home/theo/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc`
 end
 
 def step(description)
@@ -135,6 +139,12 @@ namespace :install do
     install_github_bundle 'gmarik','vundle'
     sh '/usr/bin/vim -c "BundleInstall" -c "q" -c "q"'
   end
+
+  desc 'Install autojump'
+  task :autojump do
+    step 'autojump'
+    install_autojump
+  end
 end
 
 def filemap(map)
@@ -178,6 +188,8 @@ task :install do
 
   # Install Vundle and bundles
   Rake::Task['install:vundle'].invoke
+
+  Rake::Task['install:autojump'].invoke
 
   puts
   puts "  Enjoy!"
