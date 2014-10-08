@@ -46,7 +46,6 @@ set wildmode=longest,list,full
 
 " adjust for python
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
-noremap <leader>p 0import pdb; pdb.set_trace()
 
 " Enable basic mouse behavior such as resizing buffers.
 set mouse=a
