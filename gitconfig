@@ -1,0 +1,15 @@
+[core]
+    editor = vim
+    excludesfile = /home/theo/.gitignore_global
+[user]
+    name = Theo Oikonomou
+[alias]
+    st = status -sb
+    ci = commit
+    br = branch
+    co = checkout
+    ls = ls-files
+    pull = pull --ff-only
+    onlyfiles = diff-tree --no-commit-id --name-only -r
+    show-graph = log --graph --abbrev-commit --pretty=oneline --decorate
+    lg  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
