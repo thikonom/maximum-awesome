@@ -1,11 +1,12 @@
 # Maximum Awesome
-
+My working version of the original package for Linux (tested on Ubuntu {12, 14}).
 Config files for vim and tmux, lovingly tended by a small subculture of
 peace-loving hippies. Built for Linux.
 
 ## TODO
-1. Add fish suppport
-2. Add gitconfig
+1. Make user configurable from the prompt
+2. Add fish support
+3. Install system wide ag
 
 ## What's in it?
 
