@@ -24,7 +24,9 @@ def install_autojump()
   Dir.chdir(path) do
     sh %{./install.py}
   end
-  `echo "[[ -s /home/theo/.autojump/etc/profile.d/autojump.sh ]] && source /home/theo/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc`
+  `echo "[[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && source ~/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc`
+  # reload bashrc
+  system("source #{File.expand_path("~/.bashrc")}")
 end
 
 def step(description)
@@ -109,7 +111,7 @@ end
 
 def add_git_email()
   print 'Please enter your global git email:'
-  git_email = gets
+  git_email = gets.chomp
   sh "echo '    email = #{git_email}' >> ~/.gitconfig"
 end
 
