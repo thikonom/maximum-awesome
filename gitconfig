@@ -1,8 +1,6 @@
 [core]
     editor = vim
-    excludesfile = /home/theo/.gitignore_global
-[user]
-    name = Theo Oikonomou
+    excludesfile = ~/.gitignore_global
 [alias]
     st = status -sb
     ci = commit
@@ -16,3 +14,6 @@
     diff = diff --color
 [color]
     ui = auto
+[user]
+    name = Theo Oikonomou
+

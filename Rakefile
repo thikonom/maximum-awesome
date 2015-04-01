@@ -1,5 +1,5 @@
 def apt_install(package, *options)
-  `apt-cache search #{package}`
+   `apt-cache search #{package}`
    return if $?.success?
 
    sh "sudo apt-get install #{package} #{options.join ' '}"
@@ -107,12 +107,13 @@ def unlink_file(original_filename, symlink_filename)
   end
 end
 
+def add_git_email()
+  print 'Please enter your global git email:'
+  git_email = gets
+  sh "echo '    email = #{git_email}' >> ~/.gitconfig"
+end
+
 namespace :install do
-  desc 'Install The Silver Searcher'
-  task :the_silver_searcher do
-    step 'the_silver_searcher'
-    apt_install 'the_silver_searcher'
-  end
 
   desc 'Install ctags'
   task :ctags do
@@ -120,17 +121,16 @@ namespace :install do
     apt_install 'ctags'
   end
 
-  desc 'Install reattach-to-user-namespace'
-  task :reattach_to_user_namespace do
-    step 'reattach-to-user-namespace'
-    apt_install 'reattach-to-user-namespace'
+  desc 'Install Vim'
+  task :vim_love do
+    step 'vim love'
+    apt_install 'vim'
   end
 
   desc 'Install tmux'
   task :tmux do
     step 'tmux'
-    # tmux copy-pipe function needs tmux >= 1.8
-    apt_install 'tmux', :requires => '>= 1.8'
+    apt_install 'tmux'
   end
 
   desc 'Install Vundle'
@@ -161,20 +161,20 @@ COPIED_FILES = filemap(
 )
 
 LINKED_FILES = filemap(
-  'vim'           => '~/.vim',
-  'tmux.conf'     => '~/.tmux.conf',
-  'vimrc'         => '~/.vimrc',
-  'vimrc.bundles' => '~/.vimrc.bundles'
+  'vim'                  => '~/.vim',
+  'tmux.conf'            => '~/.tmux.conf',
+  'vimrc'                => '~/.vimrc',
+  'vimrc.bundles'        => '~/.vimrc.bundles',
+  'gitconfig'            => '~/.gitconfig',
+  'gitignore_global'     => '~/.gitignore_global'
 )
 
 desc 'Install these config files.'
 task :install do
-  Rake::Task['install:the_silver_searcher'].invoke
   Rake::Task['install:ctags'].invoke
-  Rake::Task['install:reattach_to_user_namespace'].invoke
-
-  # TODO install gem ctags?
-  # TODO run gem ctags?
+  Rake::Task['install:vim_love'].invoke
+  Rake::Task['install:tmux'].invoke
+  Rake::Task['install:autojump'].invoke
 
   step 'symlink'
 
@@ -189,7 +189,7 @@ task :install do
   # Install Vundle and bundles
   Rake::Task['install:vundle'].invoke
 
-  Rake::Task['install:autojump'].invoke
+  add_git_email()
 
   puts
   puts "  Enjoy!"
