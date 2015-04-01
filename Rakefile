@@ -24,9 +24,26 @@ def install_autojump()
   Dir.chdir(path) do
     sh %{./install.py}
   end
-  `echo "[[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && source ~/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc`
-  # reload bashrc
-  system("source #{File.expand_path("~/.bashrc")}")
+  line = "if test -f /home/thikonom/.autojump/share/autojump/autojump.fish; . /home/thikonom/.autojump/share/autojump/autojump.fish; end"
+  system("echo '#{line}' >> ~/.config/fish/config/fish")
+end
+
+def install_ag()
+    sh 'sudo apt-get install build-essential automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev'
+    sh 'git clone https://github.com/ggreer/the_silver_searcher.git'
+    Dir.chdir 'the_silver_searcher' do
+      sh './build.sh'
+      sh 'sudo make install'
+    end
+end
+
+def install_fish()
+  sh "sudo apt-add-repository ppa:fish-shell/release-2"
+  sh "sudo apt-get update"
+  sh "sudo apt-get install fish"
+  system("chsh -s /usr/bin/fish")
+  sh "mkdir -p ~/.config/fish"
+  sh "touch ~/.config/fish/config.fish"
 end
 
 def step(description)
@@ -142,21 +159,23 @@ namespace :install do
     sh '/usr/bin/vim -c "BundleInstall" -c "q" -c "q"'
   end
 
+  desc 'Install The Silver Searcher'
+  task :the_silver_searcher do
+    step 'the_silver_searcher'
+    install_ag
+  end
+
+  desc 'Install the fish shell'
+  desc 'Install fish'
+  task :fish do
+    step 'fish'
+    install_fish
+  end
+
   desc 'Install autojump'
   task :autojump do
     step 'autojump'
     install_autojump
-  end
-
-  desc 'Install The Silver Searcher'
-  task :the_silver_searcher do
-    step 'the_silver_searcher'
-    sh 'sudo apt-get install build-essential automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev'
-    sh 'git clone https://github.com/ggreer/the_silver_searcher.git'
-    Dir.chdir 'the_silver_searcher' do
-      sh './build.sh'
-      sh 'sudo make install'
-    end
   end
 
 end
@@ -188,8 +207,9 @@ task :install do
   Rake::Task['install:ctags'].invoke
   Rake::Task['install:vim_love'].invoke
   Rake::Task['install:tmux'].invoke
-  Rake::Task['install:autojump'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
+  Rake::Task['install:fish'].invoke
+  Rake::Task['install:autojump'].invoke
 
   step 'symlink'
 

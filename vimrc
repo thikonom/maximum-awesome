@@ -1,3 +1,6 @@
+" can't use fish shell with syntastic
+set shell=bash
+
 " don't bother with vi compatibility
 set nocompatible
 
