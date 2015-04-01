@@ -147,6 +147,18 @@ namespace :install do
     step 'autojump'
     install_autojump
   end
+
+  desc 'Install The Silver Searcher'
+  task :the_silver_searcher do
+    step 'the_silver_searcher'
+    sh 'sudo apt-get install build-essential automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev'
+    sh 'git clone https://github.com/ggreer/the_silver_searcher.git'
+    Dir.chdir 'the_silver_searcher' do
+      sh './build.sh'
+      sh 'sudo make install'
+    end
+  end
+
 end
 
 def filemap(map)
@@ -177,6 +189,7 @@ task :install do
   Rake::Task['install:vim_love'].invoke
   Rake::Task['install:tmux'].invoke
   Rake::Task['install:autojump'].invoke
+  Rake::Task['install:the_silver_searcher'].invoke
 
   step 'symlink'
 
