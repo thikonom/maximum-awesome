@@ -14,6 +14,8 @@
     diff = diff --color
 [color]
     ui = auto
+[push]
+    default = current
 [user]
     name = Theo Oikonomou
-
+    email = theo.oikonomou@yahoo.com
