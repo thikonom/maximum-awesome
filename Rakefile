@@ -1,7 +1,4 @@
 def apt_install(package, *options)
-   `apt-cache search #{package}`
-   return if $?.success?
-
    sh "sudo apt-get install #{package} #{options.join ' '}"
 end
 
@@ -45,6 +42,13 @@ def install_fish()
   sh "mkdir -p ~/.config/fish"
   sh "touch ~/.config/fish/config.fish"
 end
+
+def install_virtualfish()
+   apt_install('python-setuptools')
+   sh "sudo easy_install pip"
+   sh "sudo pip install virtualfish"
+end
+
 
 def step(description)
   description = "-- #{description} "
@@ -166,10 +170,15 @@ namespace :install do
   end
 
   desc 'Install the fish shell'
-  desc 'Install fish'
   task :fish do
     step 'fish'
     install_fish
+  end
+
+  desc 'Install virtualenv'
+  task :virtualfish do
+    step 'virtualfish'
+    install_virtualfish
   end
 
   desc 'Install autojump'
@@ -199,7 +208,8 @@ LINKED_FILES = filemap(
   'vimrc'                => '~/.vimrc',
   'vimrc.bundles'        => '~/.vimrc.bundles',
   'gitconfig'            => '~/.gitconfig',
-  'gitignore_global'     => '~/.gitignore_global'
+  'gitignore_global'     => '~/.gitignore_global',
+  'config.fish'          => '~/.config.fish'
 )
 
 desc 'Install these config files.'
@@ -209,6 +219,7 @@ task :install do
   Rake::Task['install:tmux'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
   Rake::Task['install:fish'].invoke
+  Rake::Task['install:virtualfish'].invoke
   Rake::Task['install:autojump'].invoke
 
   step 'symlink'
