@@ -5,6 +5,7 @@
 * j
 * tmux
 * various vim plugins 
+* virtualfish
 * Awesome syntax highlighting with the [Solarized color scheme](http://ethanschoonover.com/solarized)
 * Want to know more? [Fly Vim, First Class](http://corner.squareup.com/2013/08/fly-vim-first-class.html)
 
