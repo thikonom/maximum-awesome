@@ -49,6 +49,13 @@ def install_virtualfish()
    sh "sudo pip install virtualfish"
 end
 
+def install_solarized_yo()
+  apt_install('dconf-cli')
+  sh "git clone git@github.com:Anthony25/gnome-terminal-colors-solarized.git solarized_theme"
+  Dir.chdir 'solarized_theme' do
+    sh './install.sh'
+  end
+end
 
 def step(description)
   description = "-- #{description} "
@@ -187,6 +194,11 @@ namespace :install do
     install_autojump
   end
 
+  desc 'Install solarized yo!'
+  task :solarized do
+    step 'solarized'
+    install_solarized_yo
+  end
 end
 
 def filemap(map)
@@ -221,6 +233,7 @@ task :install do
   Rake::Task['install:fish'].invoke
   Rake::Task['install:virtualfish'].invoke
   Rake::Task['install:autojump'].invoke
+  Rake::Task['install:solarized'].invoke
 
   step 'symlink'
 
