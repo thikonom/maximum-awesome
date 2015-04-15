@@ -57,6 +57,10 @@ def install_solarized_yo()
   end
 end
 
+def install_inconsolata()
+  apt_install('fonts-inconsolata')
+end
+
 def step(description)
   description = "-- #{description} "
   description = description.ljust(80, '-')
@@ -199,6 +203,12 @@ namespace :install do
     step 'solarized'
     install_solarized_yo
   end
+
+  desc 'Install inconsolata'
+  task :inconsolata do
+    step 'inconsolata'
+    install_inconsolata
+  end
 end
 
 def filemap(map)
@@ -234,6 +244,7 @@ task :install do
   Rake::Task['install:virtualfish'].invoke
   Rake::Task['install:autojump'].invoke
   Rake::Task['install:solarized'].invoke
+  Rake::Task['install:inconsolata'].invoke
 
   step 'symlink'
 
