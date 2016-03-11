@@ -16,6 +16,11 @@ if (&t_Co == 256 || has('gui_running'))
   endif
 endif
 
+set autochdir
+
+let g:jedi#use_tabs_not_buffers = 1
+let delimitMate_expand_cr = 1
+
 " Disambiguate ,a & ,t from the Align plugin, making them fast again.
 "
 " This section is here to prevent AlignMaps from adding a bunch of mappings
