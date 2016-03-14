@@ -1,1 +1,0 @@
-/Users/lambdasloth/.config/fish/config.fish

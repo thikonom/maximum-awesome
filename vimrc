@@ -47,9 +47,6 @@ set wildmenu                                                 " show a navigable 
 set wildmode=longest,list,full
 
 
-" Python
-autocmd FileType python setlocal shiftwidth=4 softtabstop=4
-
 " Enable basic mouse behavior such as resizing buffers.
 set mouse=a
 if exists('$TMUX')  " Support resizing in tmux
@@ -118,8 +115,12 @@ endif
 " Don't copy the contents of an overwritten selection.
 vnoremap p "_dP
 
+"-------------------- Python stuff -----------------------
+autocmd FileType python setlocal shiftwidth=4 softtabstop=4
+
 " Call flake8
 autocmd FileType python map <buffer> ff :call Flake8()<CR>
+"---------------------------------------------------------
 
 " Go crazy!
 if filereadable(expand("~/.vimrc.local"))
