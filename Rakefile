@@ -37,6 +37,19 @@ def brew_cask_install(package, *options)
   sh "brew cask install #{package} #{options.join ' '}"
 end
 
+def install_fish()
+  sh "brew install fish"
+  sh "echo '/usr/local/bin/fish' | sudo tee -a /etc/shells"
+  system("chsh -s /usr/local/bin/fish")
+  sh "mkdir -p ~/.config/fish"
+end
+
+def add_git_email()
+  print 'Please enter your global git email:'
+  git_email = gets
+  sh "echo '    email = #{git_email}' >> ~/.gitconfig"
+end
+
 def step(description)
   description = "-- #{description} "
   description = description.ljust(80, '-')
@@ -143,6 +156,18 @@ namespace :install do
     brew_install 'the_silver_searcher'
   end
 
+  desc 'Install autojump'
+  task :autojump do
+    step 'autojump'
+    brew_install 'autojump'
+  end
+
+  desc 'Install fish'
+  task :fish do
+    step 'fish'
+    install_fish
+  end
+
   desc 'Install iTerm'
   task :iterm do
     step 'iterm2'
@@ -223,7 +248,13 @@ LINKED_FILES = filemap(
   'vim'           => '~/.vim',
   'tmux.conf'     => '~/.tmux.conf',
   'vimrc'         => '~/.vimrc',
-  'vimrc.bundles' => '~/.vimrc.bundles'
+  'vimrc.bundles' => '~/.vimrc.bundles',
+
+  'gitconfig'            => '~/.gitconfig',
+  'gitignore_global'     => '~/.gitignore_global',
+
+  './fish/config.fish' => '~/.config/fish/config.fish',
+  './fish/conda.fish' => '~/.config/fish/conda.fish',
 )
 
 desc 'Install these config files.'
@@ -236,6 +267,8 @@ task :install do
   Rake::Task['install:reattach_to_user_namespace'].invoke
   Rake::Task['install:tmux'].invoke
   Rake::Task['install:macvim'].invoke
+  Rake::Task['install:fish'].invoke
+  Rake::Task['install:autojump'].invoke
 
   # TODO install gem ctags?
   # TODO run gem ctags?
@@ -252,6 +285,8 @@ task :install do
 
   # Install Vundle and bundles
   Rake::Task['install:vundle'].invoke
+
+  add_git_email()
 
   step 'iterm2 colorschemes'
   colorschemes = `defaults read com.googlecode.iterm2 'Custom Color Presets'`
