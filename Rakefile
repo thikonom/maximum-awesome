@@ -17,6 +17,10 @@ def brew_install(package, *args)
   end
 end
 
+def defaults_write(domain, key, type, value)
+  sh "defaults write #{domain} #{key} -#{type} #{value}"
+end
+
 def version_match?(requirement, version)
   # This is a hack, but it lets us avoid a gem dep for version checking.
   # Gem dependencies must be numeric, so we remove non-numeric characters here.
@@ -147,7 +151,7 @@ namespace :install do
       abort "Failed to tap caskroom/homebrew-cask in Homebrew."
     end
 
-    brew_install 'brew-cask'
+  #  brew_install 'brew-cask'
   end
 
   desc 'Install The Silver Searcher'
@@ -166,6 +170,13 @@ namespace :install do
   task :fish do
     step 'fish'
     install_fish
+  end
+
+  desc 'Change system defaults '
+  task :change_system_defaults do
+    step 'change_system_defaults'
+      defaults_write 'NSGlobalDomain', 'KeyRepeat',        'int', 2
+      defaults_write 'NSGlobalDomain', 'InitialKeyRepeat', 'int', 15
   end
 
   desc 'Install iTerm'
@@ -269,6 +280,7 @@ task :install do
   Rake::Task['install:macvim'].invoke
   Rake::Task['install:fish'].invoke
   Rake::Task['install:autojump'].invoke
+  Rake::Task['install:change_system_defaults'].invoke
 
   # TODO install gem ctags?
   # TODO run gem ctags?
