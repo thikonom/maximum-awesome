@@ -48,6 +48,14 @@ def install_fish()
   sh "mkdir -p ~/.config/fish"
 end
 
+def install_python()
+  sh "brew install python"
+end
+
+def install_virtualfish()
+   sh "pip install virtualfish"
+end
+
 def add_git_email()
   print 'Please enter your global git email:'
   git_email = gets
@@ -166,10 +174,22 @@ namespace :install do
     brew_install 'autojump'
   end
 
+  desc 'Install python'
+  task :python do
+    step 'python'
+    install_python
+  end
+
   desc 'Install fish'
   task :fish do
     step 'fish'
     install_fish
+  end
+
+  desc 'Install virtualenv'
+  task :virtualfish do
+    step 'virtualfish'
+    install_virtualfish
   end
 
   desc 'Change system defaults '
@@ -272,6 +292,7 @@ desc 'Install these config files.'
 task :install do
   Rake::Task['install:brew'].invoke
   Rake::Task['install:brew_cask'].invoke
+  Rake::Task['install:python'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
   Rake::Task['install:iterm'].invoke
   Rake::Task['install:ctags'].invoke
@@ -281,6 +302,7 @@ task :install do
   Rake::Task['install:fish'].invoke
   Rake::Task['install:autojump'].invoke
   Rake::Task['install:change_system_defaults'].invoke
+  Rake::Task['install:virtualfish'].invoke
 
   # TODO install gem ctags?
   # TODO run gem ctags?

@@ -13,7 +13,7 @@ end
 alias size    'du -sh'
 
 source /usr/local/share/autojump/autojump.fish
-source $HOME/.config/fish/conda.fish
 
-# activate default conda environment
-condactivate job
+if test -f $HOME/.autojump/share/autojump/autojump.fish; . $HOME/.autojump/share/autojump/autojump.fish; end
+
+eval (python -m virtualfish)
