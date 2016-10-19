@@ -42,24 +42,30 @@ def brew_cask_install(package, *options)
 end
 
 def install_fish()
-  sh "brew install fish"
-  sh "echo '/usr/local/bin/fish' | sudo tee -a /etc/shells"
-  system("chsh -s /usr/local/bin/fish")
-  sh "mkdir -p ~/.config/fish"
+  versions = `brew list fish --versions`
+  if versions.empty?
+    sh "brew install fish"
+    sh "echo '/usr/local/bin/fish' | sudo tee -a /etc/shells"
+    system("chsh -s /usr/local/bin/fish")
+    sh "mkdir -p ~/.config/fish"
+    cp "./fish/config.fish", "~/.config/fish/config.fish", :verbose => true
+  else
+    puts "Fish already installed"
+  end
 end
 
 def install_python()
-  sh "brew install python"
+  brew_install "python"
 end
 
 def install_virtualfish()
    sh "pip install virtualfish"
 end
 
-def add_git_email()
-  print 'Please enter your global git email:'
-  git_email = gets
-  sh "echo '    email = #{git_email}' >> ~/.gitconfig"
+def install_day_one_python_libs()
+  sh "pip install jedi"
+  sh "pip install pylint"
+  sh "pip install yapf"
 end
 
 def step(description)
@@ -186,6 +192,13 @@ namespace :install do
     install_fish
   end
 
+  desc 'Install day one python libs'
+  task :day_one_python_libs do
+    step 'day_one_python_libs'
+    install_day_one_python_libs
+  end
+
+
   desc 'Install virtualenv'
   task :virtualfish do
     step 'virtualfish'
@@ -226,31 +239,11 @@ namespace :install do
     brew_install 'tmux', :requires => '>= 2.1'
   end
 
-  desc 'Install MacVim'
-  task :macvim do
-    step 'MacVim'
-    unless app? 'MacVim'
-      brew_cask_install 'macvim'
-    end
-
-    bin_dir = File.expand_path('~/bin')
-    bin_vim = File.join(bin_dir, 'vim')
-    unless ENV['PATH'].split(':').include?(bin_dir)
-      puts 'Please add ~/bin to your PATH, e.g. run this command:'
-      puts
-      puts %{  echo 'export PATH="~/bin:$PATH"' >> ~/.bashrc}
-      puts
-      puts 'The exact command and file will vary by your shell and configuration.'
-    end
-
-    FileUtils.mkdir_p(bin_dir)
-    unless File.executable?(bin_vim)
-      File.open(bin_vim, 'w', 0744) do |io|
-        io << <<-SHELL
-#!/bin/bash
-exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
-        SHELL
-      end
+  desc 'Install Vim (compiled with python)'
+  task :vim do
+    step 'Vim'
+    unless app? 'Vim'
+      brew_install 'vim', '--with-python'
     end
   end
 
@@ -283,9 +276,6 @@ LINKED_FILES = filemap(
 
   'gitconfig'            => '~/.gitconfig',
   'gitignore_global'     => '~/.gitignore_global',
-
-  './fish/config.fish' => '~/.config/fish/config.fish',
-  './fish/conda.fish' => '~/.config/fish/conda.fish',
 )
 
 desc 'Install these config files.'
@@ -298,11 +288,12 @@ task :install do
   Rake::Task['install:ctags'].invoke
   Rake::Task['install:reattach_to_user_namespace'].invoke
   Rake::Task['install:tmux'].invoke
-  Rake::Task['install:macvim'].invoke
+  Rake::Task['install:vim'].invoke
   Rake::Task['install:fish'].invoke
   Rake::Task['install:autojump'].invoke
   Rake::Task['install:change_system_defaults'].invoke
   Rake::Task['install:virtualfish'].invoke
+  Rake::Task['install:day_one_python_libs'].invoke
 
   # TODO install gem ctags?
   # TODO run gem ctags?
@@ -314,13 +305,11 @@ task :install do
   end
 
   COPIED_FILES.each do |orig, copy|
-    cp orig, copy, :verbose => true unless File.exist?(copy)
+    cp orig, copy, :verbose => true
   end
 
   # Install Vundle and bundles
   Rake::Task['install:vundle'].invoke
-
-  add_git_email()
 
   step 'iterm2 colorschemes'
   colorschemes = `defaults read com.googlecode.iterm2 'Custom Color Presets'`

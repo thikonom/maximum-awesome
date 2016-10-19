@@ -1,2 +1,4 @@
-Bundle 'bling/vim-airline'
-Bundle 'davidhalter/jedi-vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'

@@ -114,9 +114,14 @@ vnoremap p "_dP
 "-------------------- Python stuff -----------------------
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
-" Call flake8
+" Call flake8, pylint, yapf
+let g:syntastic_python_checkers = ['pylint']
 autocmd FileType python map <buffer> ff :call Flake8()<CR>
+autocmd FileType python nnoremap <Leader>= :0,$!yapf<CR>
 "---------------------------------------------------------
+
+" save in insert mode
+inoremap <C-s> <ESC>:w<CR>i
 
 " Go crazy!
 if filereadable(expand("~/.vimrc.local"))

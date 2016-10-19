@@ -1,6 +1,6 @@
 [core]
     editor = vim
-    excludesfile = ~/.gitignore_global
+    excludesfile = $HOME/.gitignore_global
 [alias]
     st = status -sb
     ci = commit
@@ -16,5 +16,8 @@
     ui = auto
 [push]
     default = current
-[user]
-    name = Theo Oikonomou
+[difftool "sourcetree"]
+    cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+[mergetool "sourcetree"]
+    cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+    trustExitCode = true
