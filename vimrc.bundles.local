@@ -1,3 +1,2 @@
 Bundle 'bling/vim-airline'
 Bundle 'klen/python-mode'
-Bundle 'davidhalter/jedi-vim'

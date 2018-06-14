@@ -45,8 +45,8 @@ end
 
 def install_virtualfish()
    apt_install('python-setuptools')
-   sh "sudo easy_install pip"
-   sh "sudo pip install virtualfish"
+   #sh "sudo easy_install pip"
+   sh "pip install virtualfish"
 end
 
 def install_solarized_yo()
