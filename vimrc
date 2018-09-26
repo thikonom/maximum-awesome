@@ -120,9 +120,13 @@ autocmd FileType python map <buffer> ff :call Flake8()<CR>
 autocmd FileType python nnoremap <Leader>= :0,$!yapf<CR>
 "---------------------------------------------------------
 
+" tagbar
+nnoremap <silent> <Leader>k :TagbarToggle<CR>
+
 " save in insert mode
 inoremap <C-s> <ESC>:w<CR>i
 
+let NERDTreeIgnore = ['\.pyc$']
 " Go crazy!
 if filereadable(expand("~/.vimrc.local"))
   " In your .vimrc.local, you might like:
