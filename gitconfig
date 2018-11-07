@@ -1,6 +1,6 @@
 [core]
-    editor = vim
-    excludesfile = $HOME/.gitignore_global
+    excludesfile = ~/.gitignore_global
+	editor = vim
 [alias]
     st = status -sb
     ci = commit
@@ -21,4 +21,3 @@
 [mergetool "sourcetree"]
     cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
     trustExitCode = true
-[user]

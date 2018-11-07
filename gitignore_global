@@ -5,6 +5,7 @@ _test.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+.pytest_cache/
 
 # C extensions
 *.so
@@ -58,3 +59,5 @@ docs/_build/
 target/
 
 .DS_Store
+.DS_Store?
+
