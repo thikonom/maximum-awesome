@@ -62,6 +62,8 @@ def install_vim_python_libs()
   sh "pip3 install jedi --user"
   sh "pip3 install pylint --user"
   sh "pip3 install yapf --user"
+  brew_install "flake8"
+  brew_install "yapf"
 end
 
 def step(description)

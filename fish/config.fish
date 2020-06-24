@@ -37,10 +37,7 @@ alias size 'du -sh'
 alias ll "ls -laGh"
 # -----------------------
 
-fish_vi_key_bindings
-
 [ -f (brew --prefix)/share/autojump/autojump.fish ]; and source (brew --prefix)/share/autojump/autojump.fish
-
 
 set -Ux PYENV_ROOT $HOME/.pyenv
 set -Ux fish_user_paths $PYENV_ROOT/bin $fish_user_paths

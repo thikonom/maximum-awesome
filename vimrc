@@ -114,7 +114,7 @@ vnoremap p "_dP
 "-------------------- Python stuff -----------------------
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
-" Call flake8, pylint, yapf
+" Call flake8, yapf
 let g:syntastic_python_checkers = ['flake8']
 autocmd FileType python map <buffer> ff :call Flake8()<CR>
 autocmd FileType python nnoremap <Leader>= :0,$!yapf<CR>
