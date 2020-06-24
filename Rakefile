@@ -48,24 +48,21 @@ def install_fish()
     sh "echo '/usr/local/bin/fish' | sudo tee -a /etc/shells"
     system("chsh -s /usr/local/bin/fish")
     sh "mkdir -p ~/.config/fish"
-    cp "./fish/config.fish", "~/.config/fish/config.fish", :verbose => true
+#    cp "./fish/config.fish", "~/.config/fish/config.fish", :verbose => true
   else
     puts "Fish already installed"
   end
 end
 
 def install_python()
-  brew_install "python"
-end
-
-def install_virtualfish()
-   sh "pip install virtualfish"
+  brew_install "pyenv"
+  brew_install "pyenv-virtualenv"
 end
 
 def install_day_one_python_libs()
-  sh "pip install jedi"
-  sh "pip install pylint"
-  sh "pip install yapf"
+  sh "pip3 install jedi --user"
+  sh "pip3 install pylint --user"
+  sh "pip3 install yapf --user"
 end
 
 def step(description)
@@ -157,52 +154,34 @@ namespace :install do
     end
   end
 
-  desc 'Install Homebrew Cask'
-  task :brew_cask do
-    step 'Homebrew Cask'
-    system('brew untap phinze/cask') if system('brew tap | grep phinze/cask > /dev/null')
-    unless system('brew tap | grep caskroom/cask > /dev/null') || system('brew tap caskroom/homebrew-cask')
-      abort "Failed to tap caskroom/homebrew-cask in Homebrew."
-    end
-
-  #  brew_install 'brew-cask'
-  end
-
   desc 'Install The Silver Searcher'
   task :the_silver_searcher do
-    step 'the_silver_searcher'
+    step 'Silver searcher'
     brew_install 'the_silver_searcher'
   end
 
   desc 'Install autojump'
   task :autojump do
-    step 'autojump'
+    step 'Autojump'
     brew_install 'autojump'
   end
 
   desc 'Install python'
   task :python do
-    step 'python'
+    step 'Python'
     install_python
   end
 
   desc 'Install fish'
   task :fish do
-    step 'fish'
+    step 'Fish'
     install_fish
   end
 
   desc 'Install day one python libs'
   task :day_one_python_libs do
-    step 'day_one_python_libs'
+    step 'Vim python libs'
     install_day_one_python_libs
-  end
-
-
-  desc 'Install virtualenv'
-  task :virtualfish do
-    step 'virtualfish'
-    install_virtualfish
   end
 
   desc 'Change system defaults '
@@ -214,7 +193,7 @@ namespace :install do
 
   desc 'Install iTerm'
   task :iterm do
-    step 'iterm2'
+    step 'Iterm2'
     unless app? 'iTerm'
       brew_cask_install 'iterm2'
     end
@@ -222,7 +201,7 @@ namespace :install do
 
   desc 'Install ctags'
   task :ctags do
-    step 'ctags'
+    step 'Ctags'
     brew_install 'ctags'
   end
 
@@ -234,7 +213,7 @@ namespace :install do
 
   desc 'Install tmux'
   task :tmux do
-    step 'tmux'
+    step 'Tmux'
     # tmux copy-pipe function needs tmux >= 1.8
     brew_install 'tmux', :requires => '>= 2.1'
   end
@@ -243,13 +222,13 @@ namespace :install do
   task :vim do
     step 'Vim'
     unless app? 'Vim'
-      brew_install 'vim', '--with-python'
+      brew_install 'vim'
     end
   end
 
   desc 'Install Vundle'
   task :vundle do
-    step 'vundle'
+    step 'Vundle'
     install_github_bundle 'VundleVim','Vundle.vim'
     sh '/usr/local/bin/vim -c "PluginInstall!" -c "q" -c "q"'
   end
@@ -276,13 +255,15 @@ LINKED_FILES = filemap(
 
   'gitconfig'            => '~/.gitconfig',
   'gitignore_global'     => '~/.gitignore_global',
+
+  './fish/config.fish'   => '~/.config/fish/config.fish'
 )
 
 desc 'Install these config files.'
 task :install do
   Rake::Task['install:brew'].invoke
-  Rake::Task['install:brew_cask'].invoke
   Rake::Task['install:python'].invoke
+  Rake::Task['install:day_one_python_libs'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
   Rake::Task['install:iterm'].invoke
   Rake::Task['install:ctags'].invoke
@@ -292,8 +273,6 @@ task :install do
   Rake::Task['install:fish'].invoke
   Rake::Task['install:autojump'].invoke
   Rake::Task['install:change_system_defaults'].invoke
-  Rake::Task['install:virtualfish'].invoke
-  Rake::Task['install:day_one_python_libs'].invoke
 
   # TODO install gem ctags?
   # TODO run gem ctags?

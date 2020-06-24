@@ -65,7 +65,7 @@ noremap <C-l> <C-w>l
 noremap <leader>l :Align
 nnoremap <leader>a :Ag<space>
 nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>d :NERDTreeToggle<CR>
+" nnoremap <leader>d :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
 nnoremap <leader>t :CtrlP<CR>
 nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
@@ -115,10 +115,12 @@ vnoremap p "_dP
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
 " Call flake8, pylint, yapf
-let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_checkers = ['flake8']
 autocmd FileType python map <buffer> ff :call Flake8()<CR>
 autocmd FileType python nnoremap <Leader>= :0,$!yapf<CR>
 "---------------------------------------------------------
+
+let NERDTreeIgnore = ['\.pyc$']
 
 " tagbar
 nnoremap <silent> <Leader>k :TagbarToggle<CR>

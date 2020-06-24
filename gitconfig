@@ -1,6 +1,6 @@
 [core]
     excludesfile = ~/.gitignore_global
-	editor = vim
+    editor = vim
 [alias]
     st = status -sb
     ci = commit
@@ -12,6 +12,7 @@
     show-graph = log --graph --abbrev-commit --pretty=oneline --decorate
     lg  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     diff = diff --color
+    pl = pull --ff-only
 [color]
     ui = auto
 [push]
