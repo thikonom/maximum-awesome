@@ -33,11 +33,14 @@ end
 # --------------------------------
 
 # ------- Aliases -------
-alias size    'du -sh'
+alias size 'du -sh'
+alias ll "ls -laGh"
 # -----------------------
 
-source /usr/local/share/autojump/autojump.fish
-if test -f $HOME/.autojump/share/autojump/autojump.fish; . $HOME/.autojump/share/autojump/autojump.fish; end
+fish_vi_key_bindings
+
+[ -f (brew --prefix)/share/autojump/autojump.fish ]; and source (brew --prefix)/share/autojump/autojump.fish
+
 
 set -Ux PYENV_ROOT $HOME/.pyenv
 set -Ux fish_user_paths $PYENV_ROOT/bin $fish_user_paths

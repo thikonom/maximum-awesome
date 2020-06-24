@@ -48,18 +48,17 @@ def install_fish()
     sh "echo '/usr/local/bin/fish' | sudo tee -a /etc/shells"
     system("chsh -s /usr/local/bin/fish")
     sh "mkdir -p ~/.config/fish"
-#    cp "./fish/config.fish", "~/.config/fish/config.fish", :verbose => true
   else
     puts "Fish already installed"
   end
 end
 
-def install_python()
+def install_pyenv()
   brew_install "pyenv"
   brew_install "pyenv-virtualenv"
 end
 
-def install_day_one_python_libs()
+def install_vim_python_libs()
   sh "pip3 install jedi --user"
   sh "pip3 install pylint --user"
   sh "pip3 install yapf --user"
@@ -166,10 +165,10 @@ namespace :install do
     brew_install 'autojump'
   end
 
-  desc 'Install python'
-  task :python do
-    step 'Python'
-    install_python
+  desc 'Install pyenv'
+  task :pyenv do
+    step 'Pyenv'
+    install_pyenv
   end
 
   desc 'Install fish'
@@ -178,10 +177,10 @@ namespace :install do
     install_fish
   end
 
-  desc 'Install day one python libs'
-  task :day_one_python_libs do
+  desc 'Install python libs for vim'
+  task :vim_python_libs do
     step 'Vim python libs'
-    install_day_one_python_libs
+    install_vim_python_libs
   end
 
   desc 'Change system defaults '
@@ -262,8 +261,8 @@ LINKED_FILES = filemap(
 desc 'Install these config files.'
 task :install do
   Rake::Task['install:brew'].invoke
-  Rake::Task['install:python'].invoke
-  Rake::Task['install:day_one_python_libs'].invoke
+  Rake::Task['install:pyenv'].invoke
+  Rake::Task['install:vim_python_libs'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
   Rake::Task['install:iterm'].invoke
   Rake::Task['install:ctags'].invoke
