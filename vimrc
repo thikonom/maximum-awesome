@@ -111,16 +111,24 @@ endif
 " Don't copy the contents of an overwritten selection.
 vnoremap p "_dP
 
-"-------------------- Python stuff -----------------------
+"-------------------- Python setup -----------------------
+" ignore .pyc
+let NERDTreeIgnore = ['\.pyc$']
+
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
 " Call flake8, yapf
 let g:syntastic_python_checkers = ['flake8']
-autocmd FileType python map <buffer> ff :call Flake8()<CR>
+" autocmd FileType python map <buffer> ff :call Flake8()<CR>
 autocmd FileType python nnoremap <Leader>= :0,$!yapf<CR>
+" let g:syntastic_debug=33
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_auto_loc_list=1
+let g:syntastic_loc_list_height=5
 "---------------------------------------------------------
 
-let NERDTreeIgnore = ['\.pyc$']
 
 " tagbar
 nnoremap <silent> <Leader>k :TagbarToggle<CR>
@@ -128,7 +136,6 @@ nnoremap <silent> <Leader>k :TagbarToggle<CR>
 " save in insert mode
 inoremap <C-s> <ESC>:w<CR>i
 
-let NERDTreeIgnore = ['\.pyc$']
 " Go crazy!
 if filereadable(expand("~/.vimrc.local"))
   " In your .vimrc.local, you might like:
