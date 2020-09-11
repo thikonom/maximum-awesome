@@ -113,7 +113,7 @@ vnoremap p "_dP
 
 "-------------------- Python setup -----------------------
 " ignore .pyc
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
