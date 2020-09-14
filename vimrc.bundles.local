@@ -1,4 +1,2 @@
 Plugin 'Raimondi/delimitMate'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
