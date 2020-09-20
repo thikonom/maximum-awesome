@@ -200,10 +200,11 @@ namespace :install do
     end
   end
 
-  desc 'Install ctags'
+  desc 'Install ctags/gotags'
   task :ctags do
     step 'Ctags'
     brew_install 'ctags'
+    brew_install 'gotags'
   end
 
   desc 'Install reattach-to-user-namespace'
