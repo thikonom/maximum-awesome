@@ -117,16 +117,8 @@ let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
-" Call flake8, yapf
+" Call flake8
 let g:syntastic_python_checkers = ['flake8']
-" autocmd FileType python map <buffer> ff :call Flake8()<CR>
-autocmd FileType python nnoremap <Leader>= :0,$!yapf<CR>
-" let g:syntastic_debug=33
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_auto_loc_list=1
-let g:syntastic_loc_list_height=5
 "---------------------------------------------------------
 
 
