@@ -220,11 +220,40 @@ namespace :install do
     brew_install 'tmux', :requires => '>= 2.1'
   end
 
-  desc 'Install Vim (compiled with python)'
-  task :vim do
-    step 'Vim'
-    unless app? 'Vim'
-      brew_install 'vim'
+  # desc 'Install Vim'
+  # task :vim do
+  #   step 'Vim'
+  #   unless app? 'Vim'
+  #     brew_install 'vim'
+  #   end
+  # end
+
+  desc 'Install MacVim'
+  task :macvim do
+    step 'MacVim'
+    unless app? 'MacVim'
+      brew_cask_install 'macvim'
+    end
+
+    bin_dir = File.expand_path('~/bin')
+    bin_vim = File.join(bin_dir, 'vim')
+    unless ENV['PATH'].split(':').include?(bin_dir)
+      puts 'Please add ~/bin to your PATH, e.g. run this command:'
+      puts
+      puts %{  echo 'export PATH="~/bin:$PATH"' >> ~/.bashrc}
+      puts
+      puts 'The exact command and file will vary by your shell and configuration.'
+      puts 'You may need to restart your shell.'
+    end
+
+    FileUtils.mkdir_p(bin_dir)
+    unless File.executable?(bin_vim)
+      File.open(bin_vim, 'w', 0744) do |io|
+        io << <<-SHELL
+#!/bin/bash
+exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
+        SHELL
+      end
     end
   end
 
@@ -232,7 +261,7 @@ namespace :install do
   task :vundle do
     step 'Vundle'
     install_github_bundle 'VundleVim','Vundle.vim'
-    sh '/usr/local/bin/vim -c "PluginInstall!" -c "q" -c "q"'
+    sh '~/bin/vim -c "PluginInstall!" -c "q" -c "q"'
   end
 end
 
@@ -265,19 +294,18 @@ desc 'Install these config files.'
 task :install do
   Rake::Task['install:brew'].invoke
   Rake::Task['install:pyenv'].invoke
-  Rake::Task['install:vim_python_libs'].invoke
+  #Rake::Task['install:vim_python_libs'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
   Rake::Task['install:iterm'].invoke
   Rake::Task['install:ctags'].invoke
   Rake::Task['install:reattach_to_user_namespace'].invoke
   Rake::Task['install:tmux'].invoke
-  Rake::Task['install:vim'].invoke
+#  Rake::Task['install:vim'].invoke
+  Rake::Task['install:macvim'].invoke
+
   Rake::Task['install:fish'].invoke
   Rake::Task['install:autojump'].invoke
   Rake::Task['install:change_system_defaults'].invoke
-
-  # TODO install gem ctags?
-  # TODO run gem ctags?
 
   step 'symlink'
 
