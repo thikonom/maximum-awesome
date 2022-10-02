@@ -35,10 +35,10 @@ def install_github_bundle(user, package)
 end
 
 def brew_cask_install(package, *options)
-  output = `brew cask info #{package}`
+  output = `brew info --cask #{package}`
   return unless output.include?('Not installed')
 
-  sh "brew cask install #{package} #{options.join ' '}"
+  sh "brew install --cask #{package} #{options.join ' '}"
 end
 
 def install_fish()
@@ -150,7 +150,7 @@ namespace :install do
   desc 'Update or Install Brew'
   task :brew do
     step 'Homebrew'
-    unless system('which brew > /dev/null || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
+    unless system('which brew > /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
       raise "Homebrew must be installed before continuing."
     end
   end
