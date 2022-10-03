@@ -121,6 +121,7 @@ autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 let g:syntastic_python_checkers = ['flake8']
 "---------------------------------------------------------
 
+let g:snipMate = { 'snippet_version' : 1 }
 
 " tagbar
 nnoremap <silent> <Leader>k :TagbarToggle<CR>
