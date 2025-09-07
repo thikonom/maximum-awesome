@@ -24,3 +24,6 @@
     trustExitCode = true
 [branch]
 	autosetupmerge = always
+[user]
+	name = Theo Oiko
+	email = thikonom@gmail.com

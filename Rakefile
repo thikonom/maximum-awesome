@@ -45,8 +45,8 @@ def install_fish()
   versions = `brew list fish --versions`
   if versions.empty?
     sh "brew install fish"
-    sh "echo '/usr/local/bin/fish' | sudo tee -a /etc/shells"
-    system("chsh -s /usr/local/bin/fish")
+    sh "echo '/usr/local/Cellar/fish/3.5.1/bin/fish' | sudo tee -a /etc/shells"
+    system("chsh -s /usr/local/Cellar/fish/3.5.1/bin/fish")
     sh "mkdir -p ~/.config/fish"
   else
     puts "Fish already installed"

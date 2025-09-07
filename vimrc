@@ -65,7 +65,7 @@ noremap <C-l> <C-w>l
 noremap <leader>l :Align
 nnoremap <leader>a :Ag<space>
 nnoremap <leader>b :CtrlPBuffer<CR>
-" nnoremap <leader>d :NERDTreeToggle<CR>
+nnoremap <leader>d :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
 nnoremap <leader>t :CtrlP<CR>
 nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
@@ -117,8 +117,8 @@ let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
-" Call flake8
-let g:syntastic_python_checkers = ['flake8']
+let g:ale_linters = { 'python': ['ruff', ], }
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'], 'python': ['ruff'], }
 "---------------------------------------------------------
 
 let g:snipMate = { 'snippet_version' : 1 }
@@ -129,6 +129,7 @@ nnoremap <silent> <Leader>k :TagbarToggle<CR>
 " save in insert mode
 inoremap <C-s> <ESC>:w<CR>i
 
+set autowrite
 " Go crazy!
 if filereadable(expand("~/.vimrc.local"))
   " In your .vimrc.local, you might like:
