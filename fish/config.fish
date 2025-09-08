@@ -37,6 +37,9 @@ alias size 'du -sh'
 alias ll "ls -laGh"
 # -----------------------
 
+set -x LC_ALL en_US.UTF-8
+set -x LANG en_US.UTF-8
+
 fish_default_key_bindings
 
 [ -f (brew --prefix)/share/autojump/autojump.fish ]; and source (brew --prefix)/share/autojump/autojump.fish
