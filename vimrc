@@ -74,6 +74,9 @@ nnoremap <leader><space> :call whitespace#strip_trailing()<CR>
 nnoremap <leader>g :GitGutterToggle<CR>
 noremap <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
+
+let g:jedi#use_default_mappings = 0
+
 " in case you forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
 

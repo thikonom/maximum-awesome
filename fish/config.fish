@@ -5,10 +5,6 @@ function reload
     source ~/.config/fish/config.fish
 end
 
-function subl
-    open -a "/Applications/Sublime Text 2.app" $argv
-end
-
 function timer
     eval $HOME/bitbar_plugins/enabled/countdown_timer.1s.rb $argv
 end

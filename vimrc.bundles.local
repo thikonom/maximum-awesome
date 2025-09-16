@@ -1,4 +1,2 @@
 Plugin 'Raimondi/delimitMate'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'dense-analysis/ale'
-Plugin 'vim-scripts/python_matchit.zip'
