@@ -1,6 +1,14 @@
 set fish_greeting ""
 
 # -------  Functions --------------
+function wk
+  $HOME/bin/wakeup.sh
+end
+
+function ip
+  ifconfig | grep "broadcast" | awk '{print $2}'
+end
+
 function reload
     source ~/.config/fish/config.fish
 end
