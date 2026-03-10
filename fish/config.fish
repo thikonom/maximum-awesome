@@ -6,7 +6,7 @@ function wk
 end
 
 function ip
-  ifconfig | grep "broadcast" | awk '{print $2}'
+  ipconfig getifaddr en0
 end
 
 function reload
@@ -39,6 +39,7 @@ end
 # ------- Aliases -------
 alias size 'du -sh'
 alias ll "ls -laGh"
+alias clock 'tty-clock -c -s -C 3 -D'
 # -----------------------
 
 set -x LC_ALL en_US.UTF-8
@@ -53,3 +54,14 @@ status --is-interactive; and . (pyenv virtualenv-init -|psub)
 
 set fish_git_dirty_color red
 set fish_git_not_dirty_color green
+export PATH="$HOME/.local/bin:$PATH"
+
+# OpenClaw Completion
+source "/Users/mac/.openclaw/completions/openclaw.fish"
+
+# pnpm
+set -gx PNPM_HOME "/Users/mac/Library/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end

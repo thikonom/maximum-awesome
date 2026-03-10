@@ -17,6 +17,8 @@
     ui = auto
 [push]
 	default = current
+[diff]
+    tool = vimdiff
 [difftool "sourcetree"]
     cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 [mergetool "sourcetree"]

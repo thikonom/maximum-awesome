@@ -65,7 +65,7 @@ noremap <C-l> <C-w>l
 noremap <leader>l :Align
 nnoremap <leader>a :Ag<space>
 nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>d :NERDTreeToggle<CR>
+nnoremap <leader>[ :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
 nnoremap <leader>t :CtrlP<CR>
 nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
@@ -122,7 +122,7 @@ autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
 let g:ale_linters = { 'python': ['ruff', ], }
 let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'], 'python': ['ruff'], }
-"---------------------------------------------------------
+nmap <silent> gd <Plug>(ale_go_to_definition)
 
 let g:snipMate = { 'snippet_version' : 1 }
 
